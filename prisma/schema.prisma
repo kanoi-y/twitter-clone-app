@@ -46,15 +46,16 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String     @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?    @unique
   emailVerified DateTime?
   description   String?
   image         String?
   accounts      Account[]
   sessions      Session[]
   tweets        Tweet[]
+  favorite      Favorite[]
 }
 
 model VerificationToken {
@@ -73,5 +74,18 @@ model Tweet {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  createdUser User @relation(fields: [createdUserId], references: [id], onDelete: Cascade)
+  createdUser User       @relation(fields: [createdUserId], references: [id], onDelete: Cascade)
+  favorite    Favorite[]
+}
+
+model Favorite {
+  id            String   @id @default(cuid())
+  createdUserId String
+  tweetId       String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  createdUser   User     @relation(fields: [createdUserId], references: [id], onDelete: Cascade)
+  tweet         Tweet    @relation(fields: [tweetId], references: [id], onDelete: Cascade)
+
+  @@unique(fields: [createdUserId, tweetId], name: "favoriteId")
 }
