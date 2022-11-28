@@ -74,8 +74,10 @@ model Tweet {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  createdUser User       @relation(fields: [createdUserId], references: [id], onDelete: Cascade)
-  favorite    Favorite[]
+  createdUser        User       @relation(fields: [createdUserId], references: [id], onDelete: Cascade)
+  favorite           Favorite[]
+  comment            Comment[]  @relation(name: "comment")
+  targetTweetComment Comment[]  @relation(name: "targetTweet")
 }
 
 model Favorite {
@@ -88,4 +90,16 @@ model Favorite {
   tweet         Tweet    @relation(fields: [tweetId], references: [id], onDelete: Cascade)
 
   @@unique(fields: [createdUserId, tweetId], name: "favoriteId")
+}
+
+model Comment {
+  id             String   @id @default(cuid())
+  targetTweetId  String
+  commentTweetId String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  targetTweet    Tweet    @relation(name: "targetTweet", fields: [targetTweetId], references: [id], onDelete: Cascade)
+  commentTweet   Tweet    @relation(name: "comment", fields: [commentTweetId], references: [id], onDelete: Cascade)
+
+  @@unique(fields: [targetTweetId, commentTweetId], name: "commentId")
 }
