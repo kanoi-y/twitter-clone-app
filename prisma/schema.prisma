@@ -2,13 +2,13 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
-  provider = "mysql"
-  url = env("DATABASE_URL")
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
   referentialIntegrity = "prisma"
 }
 
@@ -54,6 +54,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  tweets        Tweet[]
 }
 
 model VerificationToken {
@@ -62,4 +63,15 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Tweet {
+  id            String   @id @default(cuid())
+  text          String
+  image         String?
+  createdUserId String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  createdUser User @relation(fields: [createdUserId], references: [id], onDelete: Cascade)
 }
