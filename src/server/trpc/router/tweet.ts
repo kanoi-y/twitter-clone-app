@@ -1,8 +1,8 @@
 import { z } from "zod";
 import { protectedProcedure, publicProcedure, router } from "../trpc";
 
+// TODO: いいねしたツイート,画像が入ったツイートを返す処理を実装
 export const tweetRouter = router({
-  // TODO: コメントのツイートを取得しないように実装する
   getTweets: publicProcedure
     .input(
       z.object({
@@ -11,8 +11,8 @@ export const tweetRouter = router({
         cursorId: z.string().optional(),
       })
     )
-    .query(({ ctx, input }) => {
-      return ctx.prisma.tweet.findMany({
+    .query(async ({ ctx, input }) => {
+      const tweets = await ctx.prisma.tweet.findMany({
         skip: input.skip,
         take: input.take,
         cursor: {
@@ -21,6 +21,14 @@ export const tweetRouter = router({
         orderBy: {
           createdAt: "desc",
         },
+        include: {
+          comment: true,
+        },
+      });
+
+      // コメントではないtweetのみを返す
+      return tweets.filter((tweet) => {
+        return tweet.comment.length === 0;
       });
     }),
   getTweetById: publicProcedure

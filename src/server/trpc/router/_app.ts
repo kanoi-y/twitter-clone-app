@@ -1,5 +1,6 @@
 import { router } from "../trpc";
 import { authRouter } from "./auth";
+import { commentRouter } from "./comment";
 import { exampleRouter } from "./example";
 import { favoriteRouter } from "./favorite";
 import { tweetRouter } from "./tweet";
@@ -11,6 +12,7 @@ export const appRouter = router({
   user: userRouter,
   tweet: tweetRouter,
   favorite: favoriteRouter,
+  comment: commentRouter,
 });
 
 // export type definition of API
