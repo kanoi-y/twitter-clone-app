@@ -31,6 +31,33 @@ export const tweetRouter = router({
         return tweet.comment.length === 0;
       });
     }),
+  getTweetsByUserId: publicProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+        skip: z.number().optional(),
+        take: z.number(),
+        cursorId: z.string().optional(),
+      })
+    )
+    .query(({ ctx, input }) => {
+      return ctx.prisma.tweet.findMany({
+        where: {
+          createdUserId: input.userId,
+        },
+        skip: input.skip,
+        take: input.take,
+        cursor: {
+          id: input.cursorId,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        include: {
+          comment: true,
+        },
+      });
+    }),
   getTweetById: publicProcedure
     .input(z.object({ id: z.string() }))
     .query(({ ctx, input }) => {
