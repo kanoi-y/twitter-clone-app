@@ -16,6 +16,10 @@ export const favoriteRouter = router({
           createdUserId: input.userId,
           tweetId: input.tweetId,
         },
+        include: {
+          createdUser: true,
+          tweet: true,
+        },
       });
     }),
   createFavorite: protectedProcedure
