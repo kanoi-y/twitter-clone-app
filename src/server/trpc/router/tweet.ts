@@ -1,7 +1,6 @@
 import { z } from "zod";
 import { protectedProcedure, publicProcedure, router } from "../trpc";
 
-// TODO: いいねしたツイート,画像が入ったツイートを返す処理を実装
 export const tweetRouter = router({
   getTweets: publicProcedure
     .input(
@@ -11,8 +10,13 @@ export const tweetRouter = router({
         cursorId: z.string().optional(),
       })
     )
-    .query(async ({ ctx, input }) => {
-      const tweets = await ctx.prisma.tweet.findMany({
+    .query(({ ctx, input }) => {
+      return ctx.prisma.tweet.findMany({
+        where: {
+          comments: {
+            none: {},
+          },
+        },
         skip: input.skip,
         take: input.take,
         cursor: {
@@ -22,19 +26,15 @@ export const tweetRouter = router({
           createdAt: "desc",
         },
         include: {
-          comment: true,
+          comments: true,
         },
-      });
-
-      // コメントではないtweetのみを返す
-      return tweets.filter((tweet) => {
-        return tweet.comment.length === 0;
       });
     }),
   getTweetsByUserId: publicProcedure
     .input(
       z.object({
         userId: z.string(),
+        onlyImage: z.boolean().optional(),
         skip: z.number().optional(),
         take: z.number(),
         cursorId: z.string().optional(),
@@ -44,6 +44,7 @@ export const tweetRouter = router({
       return ctx.prisma.tweet.findMany({
         where: {
           createdUserId: input.userId,
+          NOT: input.onlyImage ? { image: undefined } : undefined,
         },
         skip: input.skip,
         take: input.take,
@@ -54,7 +55,7 @@ export const tweetRouter = router({
           createdAt: "desc",
         },
         include: {
-          comment: true,
+          comments: true,
         },
       });
     }),
