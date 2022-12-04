@@ -30,14 +30,14 @@ export const userRouter = router({
 
       if (!user) {
         throw new TRPCError({
-          message: "対象のTodoが存在しません",
+          message: "対象のユーザーが存在しません",
           code: "NOT_FOUND",
         });
       }
 
       if (user.id !== ctx.session.user.id) {
         throw new TRPCError({
-          message: "対象のodoを更新する権限がありません",
+          message: "対象のユーザーの情報を更新する権限がありません",
           code: "FORBIDDEN",
         });
       }
