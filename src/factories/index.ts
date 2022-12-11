@@ -1,0 +1,1 @@
+export { tweetFactory } from "./tweetFactory";
