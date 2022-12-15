@@ -1,4 +1,6 @@
 import type { Tweet, User } from "@prisma/client";
+import { formatDistanceToNowStrict } from "date-fns";
+import { ja } from "date-fns/locale";
 import Image from "next/image";
 import type { FC } from "react";
 
@@ -9,9 +11,9 @@ type Props = {
 
 export const TweetList: FC<Props> = ({ tweet, createdUser }) => {
   return (
-    <div className="flex items-start border-b border-[rgb(239,243,244)] px-4 py-3">
+    <div className="flex cursor-pointer items-start border-b border-[rgb(239,243,244)] px-4 py-3 hover:bg-slate-50">
       {createdUser.image ? (
-        <div className="avatar mr-3">
+        <div className="avatar mr-3 hover:brightness-90">
           <div className="w-12 rounded-full">
             <Image
               src="/images/twitter-icon.svg"
@@ -30,9 +32,11 @@ export const TweetList: FC<Props> = ({ tweet, createdUser }) => {
       )}
       <div className="flex-1">
         <div className="flex items-center">
-          <p className="font-bold">{createdUser.name}</p>
+          <p className="font-bold hover:underline">{createdUser.name}</p>
           <span className="ml-1 text-[rgb(83,100,113)]">・</span>
-          <span className="text-[rgb(83,100,113)]">3時間</span>
+          <span className="text-[rgb(83,100,113)] hover:underline">
+            {formatDistanceToNowStrict(tweet.createdAt, { locale: ja })}
+          </span>
         </div>
         <div className="mb-3">{tweet.text}</div>
         <div className="flex w-1/2">
