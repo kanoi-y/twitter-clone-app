@@ -27,6 +27,7 @@ export const tweetRouter = router({
         },
         include: {
           comments: true,
+          targetTweetComments: true,
           createdUser: {
             select: {
               id: true,
