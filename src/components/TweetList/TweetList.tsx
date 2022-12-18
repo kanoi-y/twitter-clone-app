@@ -5,8 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import type { FC, MouseEvent } from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 
+// TODO: コードを見返して、良ければマージする。
 type Props = {
   tweet: Tweet;
   createdUser: Omit<User, "email" | "emailVerified">;
@@ -23,7 +24,9 @@ export const TweetList: FC<Props> = ({
   currentUserId,
 }) => {
   const router = useRouter();
-  const [isFavorite, setIsFavorite] = useState(false);
+  const isFavorite = favorites.some((favorite) => {
+    return favorite.createdUserId === currentUserId;
+  });
 
   const handleTransitionUserPage = useCallback(
     (e: MouseEvent<HTMLElement>) => {
@@ -34,14 +37,6 @@ export const TweetList: FC<Props> = ({
     },
     [router, createdUser]
   );
-
-  useEffect(() => {
-    setIsFavorite(
-      favorites.some((favorite) => {
-        return favorite.createdUserId === currentUserId;
-      })
-    );
-  }, [favorites, currentUserId]);
 
   return (
     <Link href={`/${createdUser.id}/tweet/${tweet.id}`}>
