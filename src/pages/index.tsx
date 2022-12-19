@@ -43,16 +43,19 @@ const Home: NextPage = () => {
           </button>
           <button
             onClick={() => signOut()}
-            className="block  bg-lime-400 p-2 font-bold text-white"
+            className="btn"
           >
             ログアウト
           </button>
+          <div>
+
+          </div>
         </div>
       ) : (
         <div className="p-5">
           <button
             onClick={() => signIn("google")}
-            className="block bg-lime-400 p-2 font-bold text-white"
+            className="btn"
           >
             ログイン
           </button>

@@ -27,6 +27,15 @@ export const tweetRouter = router({
         },
         include: {
           comments: true,
+          targetTweetComments: true,
+          createdUser: {
+            select: {
+              id: true,
+              name: true,
+              image: true,
+              description: true,
+            },
+          },
         },
       });
     }),
@@ -56,6 +65,14 @@ export const tweetRouter = router({
         },
         include: {
           comments: true,
+          createdUser: {
+            select: {
+              id: true,
+              name: true,
+              image: true,
+              description: true,
+            },
+          },
         },
       });
     }),
