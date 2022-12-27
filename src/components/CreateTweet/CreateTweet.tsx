@@ -9,7 +9,7 @@ type Props = {
 
 export const CreateTweet: FC<Props> = ({ currentUser }) => {
   return (
-    <div className="flex">
+    <div className="flex items-start">
       {currentUser.image ? (
         <div className="avatar relative z-10 mr-3 hover:brightness-90">
           <Link href={`/${currentUser.id}`} className="w-12 rounded-full">
@@ -31,13 +31,13 @@ export const CreateTweet: FC<Props> = ({ currentUser }) => {
           </Link>
         </div>
       )}
-      <div>
+      <div className="flex-1">
         <textarea
           className="textarea"
           placeholder="いまどうしてる？"
         ></textarea>
-        <div>
-          <button className="btn">ツイートする</button>
+        <div className="flex justify-end">
+          <button className="btn btn-primary text-white border-none">ツイートする</button>
         </div>
       </div>
     </div>
