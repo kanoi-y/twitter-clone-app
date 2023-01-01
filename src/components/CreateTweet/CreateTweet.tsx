@@ -32,12 +32,16 @@ export const CreateTweet: FC<Props> = ({ currentUser }) => {
         </div>
       )}
       <div className="flex-1">
-        <textarea
-          className="textarea"
-          placeholder="いまどうしてる？"
-        ></textarea>
-        <div className="flex justify-end">
-          <button className="btn btn-primary text-white border-none">ツイートする</button>
+        <div className="border-b border-[rgb(239,243,244)]">
+          <textarea
+            className="textarea w-full resize-none text-xl text-[rgb(15,20,25)] focus:outline-none active:outline-none"
+            placeholder="いまどうしてる？"
+          ></textarea>
+        </div>
+        <div className="flex justify-end pt-3">
+          <button className="btn-primary btn rounded-full border-none text-white text-base">
+            ツイートする
+          </button>
         </div>
       </div>
     </div>
