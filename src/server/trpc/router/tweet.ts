@@ -43,7 +43,6 @@ export const tweetRouter = router({
     .input(
       z.object({
         userId: z.string(),
-        onlyImage: z.boolean().optional(),
         skip: z.number().optional(),
         take: z.number(),
         cursorId: z.string().optional(),
@@ -52,8 +51,7 @@ export const tweetRouter = router({
     .query(({ ctx, input }) => {
       return ctx.prisma.tweet.findMany({
         where: {
-          createdUserId: input.userId,
-          NOT: input.onlyImage ? { image: undefined } : undefined,
+          createdUserId: input.userId
         },
         skip: input.skip,
         take: input.take,
@@ -86,12 +84,11 @@ export const tweetRouter = router({
       });
     }),
   createTweet: protectedProcedure
-    .input(z.object({ text: z.string(), image: z.string().optional() }))
+    .input(z.object({ text: z.string() }))
     .mutation(({ ctx, input }) => {
       return ctx.prisma.tweet.create({
         data: {
           text: input.text,
-          image: input.image,
           createdUserId: ctx.session.user.id,
         },
       });

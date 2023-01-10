@@ -26,9 +26,9 @@ const Home: NextPage = () => {
 
   return (
     <main>
-      {sessionData?.user ? (
+      {user ? (
         <div className="p-5">
-          <div className="mb-3">{user?.name}</div>
+          <div className="mb-3">{user.name}</div>
           <input
             type="text"
             value={newName}
@@ -41,22 +41,13 @@ const Home: NextPage = () => {
           >
             名前を変更
           </button>
-          <button
-            onClick={() => signOut()}
-            className="btn"
-          >
+          <button onClick={() => signOut()} className="btn">
             ログアウト
           </button>
-          <div>
-
-          </div>
         </div>
       ) : (
         <div className="p-5">
-          <button
-            onClick={() => signIn("google")}
-            className="btn"
-          >
+          <button onClick={() => signIn("google")} className="btn">
             ログイン
           </button>
         </div>
